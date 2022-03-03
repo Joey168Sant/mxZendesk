@@ -36,10 +36,10 @@ TODO: Add long description of the pod here.
   s.dependency 'ZendeskAnswerBotSDK'
   s.dependency 'ZendeskChatSDK'
   s.dependency 'ZendeskSupportSDK'
-  s.dependency 'MXAuthenticationManager/core', "~> " + $authentication_version
 
   s.subspec 'core' do |core|
     core.source_files = 'MXZendeskWrapper/Classes/**/*'
+    s.dependency 'MXAuthenticationManager/core', "~> " + $authentication_version
   end
   s.subspec 'simulator' do |simulator|
     simulator.dependency 'MXAuthenticationManager/simulator', "~> " + $authentication_version
