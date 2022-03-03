@@ -39,7 +39,7 @@ TODO: Add long description of the pod here.
   s.dependency 'MXAuthenticationManager/core', "~> " + $authentication_version
 
   s.subspec 'core' do |core|
-    core.source_files = 'MXZendeskWrapper/Classes/utils/**/*'
+    core.source_files = 'MXZendeskWrapper/Classes/**/*'
     core.resources = "MXZendeskWrapper/Assets/**/*.{storyboard,xib}", 'MXZendeskWrapper/Assets/images/*'
 end
   s.subspec 'simulator' do |simulator|
