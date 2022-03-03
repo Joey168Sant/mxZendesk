@@ -42,13 +42,13 @@ TODO: Add long description of the pod here.
   s.subspec 'core' do |core|
     core.source_files = 'MXZendeskWrapper/Classes/**/*'
     core.resources = "MXZendeskWrapper/Assets/**/*.{storyboard,xib}", 'MXZendeskWrapper/Assets/images/*'
-end
+  end
   s.subspec 'simulator' do |simulator|
     simulator.dependency 'MXAuthenticationManager/simulator', "~> " + $authentication_version
-end
-s.subspec 'device' do |device|
-  device.dependency 'MXAuthenticationManager/device', "~> " + $authentication_version
-end
+  end
+  s.subspec 'device' do |device|
+    device.dependency 'MXAuthenticationManager/device', "~> " + $authentication_version
+  end
   # s.resource_bundles = {
   #   'MXZendeskWrapper' => ['MXZendeskWrapper/Assets/*.png']
   # }
