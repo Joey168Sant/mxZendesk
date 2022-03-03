@@ -37,6 +37,13 @@ TODO: Add long description of the pod here.
   s.dependency 'ZendeskChatSDK'
   s.dependency 'ZendeskSupportSDK'
   s.dependency 'MXAuthenticationManager/core', "~> " + $authentication_version
+
+  s.subspec 'simulator' do |simulator|
+    simulator.dependency 'MXAuthenticationManager/simulator', "~> " + $authentication_version
+end
+s.subspec 'device' do |device|
+  device.dependency 'MXAuthenticationManager/device', "~> " + $authentication_version
+end
   # s.resource_bundles = {
   #   'MXZendeskWrapper' => ['MXZendeskWrapper/Assets/*.png']
   # }
