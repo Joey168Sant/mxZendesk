@@ -29,7 +29,8 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/x648934/MXZendeskWrapper.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
+  s.swift_version = '4.0'
   s.static_framework = true
   # s.source_files = 'MXZendeskWrapper/Classes/**/*'
   
@@ -40,12 +41,6 @@ TODO: Add long description of the pod here.
 
   s.subspec 'core' do |core|
     core.source_files = 'MXZendeskWrapper/Classes/**/*'
-  end
-  s.subspec 'simulator' do |simulator|
-    simulator.dependency 'MXAuthenticationManager/simulator', "~> " + $authentication_version
-  end
-  s.subspec 'device' do |device|
-    device.dependency 'MXAuthenticationManager/device', "~> " + $authentication_version
   end
   # s.resource_bundles = {
   #   'MXZendeskWrapper' => ['MXZendeskWrapper/Assets/*.png']
