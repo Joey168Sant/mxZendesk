@@ -37,6 +37,7 @@ TODO: Add long description of the pod here.
   s.dependency 'ZendeskChatSDK'
   s.dependency 'ZendeskSupportSDK'
   s.dependency 'MXAuthenticationManager/core', "~> " + $authentication_version
+  s.dependency 'MxSantanderUtils'
 
   s.subspec 'core' do |core|
     core.source_files = 'MXZendeskWrapper/Classes/**/*'
