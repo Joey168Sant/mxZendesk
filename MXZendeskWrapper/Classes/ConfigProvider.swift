@@ -31,3 +31,8 @@ class ConfigProvider {
         return config ?? [:]
     }
 }
+
+enum ConfigProviderError: Error {
+    case configPathIsMissing(path: String)
+    case valueIsMissing(value: String)
+}
