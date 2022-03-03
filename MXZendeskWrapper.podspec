@@ -31,13 +31,17 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '9.0'
 
-  s.source_files = 'MXZendeskWrapper/Classes/**/*'
+  # s.source_files = 'MXZendeskWrapper/Classes/**/*'
   
   s.dependency 'ZendeskAnswerBotSDK'
   s.dependency 'ZendeskChatSDK'
   s.dependency 'ZendeskSupportSDK'
   s.dependency 'MXAuthenticationManager/core', "~> " + $authentication_version
 
+  s.subspec 'core' do |core|
+    core.source_files = 'MXZendeskWrapper/Classes/utils/**/*'
+    core.resources = "MXZendeskWrapper/Assets/**/*.{storyboard,xib}", 'MXZendeskWrapper/Assets/images/*'
+end
   s.subspec 'simulator' do |simulator|
     simulator.dependency 'MXAuthenticationManager/simulator', "~> " + $authentication_version
 end
