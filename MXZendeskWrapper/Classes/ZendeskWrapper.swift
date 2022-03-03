@@ -30,12 +30,11 @@ public class ZendeskWrapper {
     private init() {}
     
     
-    public func initZendesk(viewController: UIViewController) throws {
+    public func initZendesk() throws {
         do {
             let config = try ConfigProvider().getConfig()
             if config.contains(where: { $0.key == Configuration.ZENDESK_CONFIG }) {
                 ZendeskWrapper.santanderConfig = config[Configuration.ZENDESK_CONFIG] as! [String: Any]
-                self.viewController = viewController
                 let appId = ZendeskWrapper.santanderConfig[Configuration.APP_ID] as! String
                 let clientId = ZendeskWrapper.santanderConfig[Configuration.CLIENT_ID] as! String
                 let zendeskUrl = ZendeskWrapper.santanderConfig[Configuration.ZENDESK_URL] as! String
