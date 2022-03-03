@@ -5,6 +5,7 @@
 # Any lines starting with a # are optional, but their use is encouraged
 # To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
 #
+$authentication_version = '0.1'
 
 Pod::Spec.new do |s|
   s.name             = 'MXZendeskWrapper'
@@ -35,6 +36,7 @@ TODO: Add long description of the pod here.
   s.dependency 'ZendeskAnswerBotSDK'
   s.dependency 'ZendeskChatSDK'
   s.dependency 'ZendeskSupportSDK'
+  s.dependency 'MXAuthenticationManager/core', "~> " + $authentication_version
   # s.resource_bundles = {
   #   'MXZendeskWrapper' => ['MXZendeskWrapper/Assets/*.png']
   # }
