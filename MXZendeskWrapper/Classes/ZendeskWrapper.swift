@@ -13,6 +13,7 @@ import ChatProvidersSDK
 import AnswerBotSDK
 import CommonUISDK
 import SDKConfigurations
+import MXAuthenticationManager
 
 
 
@@ -26,7 +27,7 @@ public class ZendeskWrapper {
     }()
     private var internalCallback: ((String) -> Void)!
     private var viewController: UIViewController?
-    
+    private var buttonText : String?
     private init() {}
     
     
@@ -38,6 +39,7 @@ public class ZendeskWrapper {
                 let appId = ZendeskWrapper.santanderConfig[Configuration.APP_ID] as! String
                 let clientId = ZendeskWrapper.santanderConfig[Configuration.CLIENT_ID] as! String
                 let zendeskUrl = ZendeskWrapper.santanderConfig[Configuration.ZENDESK_URL] as! String
+                buttonText = ZendeskWrapper.santanderConfig[Configuration.BUTTON_CLOSE] as? String
                 print("appIId",appId)
                 print("clientt",clientId)
                 print("url",zendeskUrl)
@@ -51,17 +53,37 @@ public class ZendeskWrapper {
                 print("error")
             }
         } catch {
-            print("erroor")
+            print("error")
         }
     }
+    
+    @objc public class func hybridInterface(_ json: String) {
+        
+        
+    }
+
     
     public func setUserZendesk(){
         let anonymous = Identity.createAnonymous(name: UUID().uuidString, // name is optional
                         email: "") // email is optional
-
-//        let authenticated = Identity.createJwt(token: "unique_id")
         Zendesk.instance?.setIdentity(anonymous)
     }
+    
+    
+    public func presentModally(viewControllerShow: UIViewController) throws {
+        let viewController = try ZendeskWrapper.shared.buildUI()
+        self.viewController = viewControllerShow
+        let button = UIBarButtonItem(title: buttonText ?? "Cerrar", style: .plain, target: self, action: #selector(dismissZ))
+        viewController.navigationItem.leftBarButtonItem = button
+        
+        let chatController = UINavigationController(rootViewController: viewController)
+        viewControllerShow.present(chatController, animated: true)
+    }
+    
+    @objc public func dismissZ() {
+        self.viewController?.dismiss(animated: true)
+    }
+    
     
     public func buildUI() throws -> UIViewController {
 //        let messagingConfiguration = MessagingConfiguration()
@@ -71,7 +93,7 @@ public class ZendeskWrapper {
 //
 //           return try Messaging.instance.buildUI(engines: [answerBotEngine],
 //                                                 configs: [messagingConfiguration])
-        setUserZendesk()
+        
         do {
             let messagingConfiguration = MessagingConfiguration()
             let answerBotEngine = try AnswerBotEngine.engine()

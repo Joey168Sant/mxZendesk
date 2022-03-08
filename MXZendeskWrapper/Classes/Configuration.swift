@@ -13,5 +13,6 @@ struct Configuration {
     static let APP_ID = "appId"
     static let CLIENT_ID = "clientId"
     static let ZENDESK_URL = "zendeskUrl"
+    static let BUTTON_CLOSE = "Cerrar"
 }
 
