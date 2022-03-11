@@ -14,8 +14,7 @@ import AnswerBotSDK
 import CommonUISDK
 import SDKConfigurations
 import MXAuthenticationManager
-
-
+import MXSecureStorage
 
 
 public class ZendeskWrapper {
@@ -28,6 +27,7 @@ public class ZendeskWrapper {
     private var internalCallback: ((String) -> Void)!
     private var viewController: UIViewController?
     private var buttonText : String?
+    fileprivate let appearanceKey = "zendesk_open_value"
     private init() {}
     
     
@@ -43,12 +43,13 @@ public class ZendeskWrapper {
                 print("appIId",appId)
                 print("clientt",clientId)
                 print("url",zendeskUrl)
-                Zendesk.initialize(appId: appId,
-                                   clientId: clientId,
-                                   zendeskUrl: zendeskUrl)
+                Zendesk.initialize(appId: "adb4c1ebc2f26323549e3d638bb89bbc452e88b42cc350d5",
+                    clientId: "mobile_sdk_client_b95ad85e64a52f703332",
+                    zendeskUrl: "https://kairosds.zendesk.com")
                 Support.initialize(withZendesk: Zendesk.instance)
                 AnswerBot.initialize(withZendesk: Zendesk.instance, support: Support.instance!)
                 Chat.initialize(accountKey: "p2NTTV8eKsiczkAWR8cmPnmxAytjvvR3")
+                ZendeskWrapper.setKeyZendesk(saveUse: "false")
             } else {
                 print("error")
             }
@@ -56,44 +57,33 @@ public class ZendeskWrapper {
             print("error")
         }
     }
-    
-    @objc public class func hybridInterface(_ json: String) {
-        
-        
-    }
 
     
     public func setUserZendesk(){
-        let anonymous = Identity.createAnonymous(name: UUID().uuidString, // name is optional
-                        email: "") // email is optional
+        let anonymous = Identity.createAnonymous(name: "", email: "")
         Zendesk.instance?.setIdentity(anonymous)
     }
     
     
     public func presentModally(viewControllerShow: UIViewController) throws {
-        let viewController = try ZendeskWrapper.shared.buildUI()
+        let viewController = try ZendeskWrapper.shared.buildUI(viewControllerShow: viewControllerShow)
         self.viewController = viewControllerShow
         let button = UIBarButtonItem(title: buttonText ?? "Cerrar", style: .plain, target: self, action: #selector(dismissZ))
         viewController.navigationItem.leftBarButtonItem = button
         
         let chatController = UINavigationController(rootViewController: viewController)
+        ZendeskWrapper.setKeyZendesk(saveUse: "true")
         viewControllerShow.present(chatController, animated: true)
     }
     
     @objc public func dismissZ() {
+        ZendeskWrapper.setKeyZendesk(saveUse: "false")
         self.viewController?.dismiss(animated: true)
     }
     
     
-    public func buildUI() throws -> UIViewController {
-//        let messagingConfiguration = MessagingConfiguration()
-//           let answerBotEngine = try AnswerBotEngine.engine()
-////           let supportEngine = try SupportEngine.engine()
-////           let chatEngine = try ChatEngine.engine()
-//
-//           return try Messaging.instance.buildUI(engines: [answerBotEngine],
-//                                                 configs: [messagingConfiguration])
-        
+    public func buildUI(viewControllerShow: UIViewController) throws -> UIViewController {
+        setUserZendesk()
         do {
             let messagingConfiguration = MessagingConfiguration()
             let answerBotEngine = try AnswerBotEngine.engine()
@@ -101,13 +91,50 @@ public class ZendeskWrapper {
             let chatEngine = try ChatEngine.engine()
             let viewController = try Messaging.instance.buildUI(engines: [answerBotEngine, chatEngine, supportEngine],
                                                     configs: [messagingConfiguration])
+            
             return viewController
         } catch {
             print("errorZendesk ", error)
+            alertError(viewControllerShow: viewControllerShow, text: "\(error)")
             // do something with error
         }
+        ZendeskWrapper.setKeyZendesk(saveUse: "false")
         return try Messaging.instance.buildUI(engines: [],
                                               configs: [])
+    }
+    
+    public func alertError(viewControllerShow: UIViewController, text: String){
+        let alert = UIAlertController(title: "", message: text, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Aceptar", style: .default, handler: { action in
+            switch action.style{
+                case .default:
+                ZendeskWrapper.setKeyZendesk(saveUse: "false")
+            case .cancel:
+                break
+            case .destructive:
+                break
+            }
+        }))
+        viewControllerShow.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    public static func setKeyZendesk(
+        saveUse: String
+    ) {
+        do {
+            try SecureStorageHelper.setValue(key: Configuration.ZENDESK_OPEN, value: saveUse)
+        } catch {
+            debugPrint("\(String(describing: self)).\(#function): \(error)")
+        }
+    }
+    
+    public static var getKeyZendesk: Bool {
+        let value = (
+            try? SecureStorageHelper
+                .getValue(key: Configuration.ZENDESK_OPEN)
+        ) as? String ?? ""
+        return value.isEmpty ? true : (value as NSString).boolValue
     }
 
 }
@@ -121,3 +148,6 @@ extension ZendeskWrapper {
         }
     }
 }
+
+
+
