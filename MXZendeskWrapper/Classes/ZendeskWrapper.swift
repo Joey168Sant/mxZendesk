@@ -43,12 +43,12 @@ public class ZendeskWrapper {
                 print("appIId",appId)
                 print("clientt",clientId)
                 print("url",zendeskUrl)
-                Zendesk.initialize(appId: "adb4c1ebc2f26323549e3d638bb89bbc452e88b42cc350d5",
-                    clientId: "mobile_sdk_client_b95ad85e64a52f703332",
-                    zendeskUrl: "https://kairosds.zendesk.com")
+                Zendesk.initialize(appId: appId,
+                    clientId: clientId,
+                    zendeskUrl: zendeskUrl)
                 Support.initialize(withZendesk: Zendesk.instance)
                 AnswerBot.initialize(withZendesk: Zendesk.instance, support: Support.instance!)
-                Chat.initialize(accountKey: "p2NTTV8eKsiczkAWR8cmPnmxAytjvvR3")
+                Chat.initialize(accountKey: "") //solicitar key de chat
                 ZendeskWrapper.setKeyZendesk(saveUse: "false")
             } else {
                 print("error")
